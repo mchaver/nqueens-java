@@ -4,13 +4,30 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
+/**
+ * @author      mchaver
+ * @version     0.2.0
+ * @since       0.1.0
+ */
+
 public class NaiveSolver {
-    private int size;
-    private ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>();
-    private ArrayList<ArrayList<ArrayList<Integer>>> solutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
-    
-    public NaiveSolver(int size) {
+    final int size;
+    final ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>();
+    final ArrayList<ArrayList<ArrayList<Integer>>> solutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
+    boolean noThreeInLineConstraint;
+
+    /**
+     * Find all of the solutions for a particular size. 
+     * 
+     * 
+     * @param size the dimensions, or the N value, of the N-Queens board you want to solve.
+     * 
+     * @param noThreeInLineConstraint if false then solve the traditional N-Queens problem,
+     * if true then solve with the no-three-in-line constraint.
+     */
+    public NaiveSolver(int size, boolean noThreeInLineConstraint) {
 	this.size = size;
+	this.noThreeInLineConstraint = noThreeInLineConstraint;
 
 	for (int i = 0; i < size; i++) {
 	    board.add(new ArrayList<Integer>(Collections.nCopies(size, 0)));
@@ -21,10 +38,10 @@ public class NaiveSolver {
 		.collect(Collectors.joining(", "));
 	}
 
-	solve();
+	solve(board, 0);
     }
 
-    private static ArrayList<ArrayList<Integer>> copy(ArrayList<ArrayList<Integer>> input) {
+    static ArrayList<ArrayList<Integer>> copy(ArrayList<ArrayList<Integer>> input) {
 	ArrayList<ArrayList<Integer>> copy = new ArrayList<ArrayList<Integer>>(input.size());
 	for (int i = 0; i < input.size(); i++) {
 	    ArrayList<Integer> row = input.get(i);
@@ -36,35 +53,38 @@ public class NaiveSolver {
 	return copy;
     }
 
-    private void addSolution(ArrayList<ArrayList<Integer>> b) {
+    void addSolution(ArrayList<ArrayList<Integer>> b) {
 	this.solutions.add(copy(b));
     }
     
-    public void solveAux(ArrayList<ArrayList<Integer>> bb, int col) {
+    public void solve(ArrayList<ArrayList<Integer>> b, int col) {
 	// all the queens are in the correct place
 
 	if (col < size) {
 	    for (int i = 0; i < size; i++) {
-		// board.get(i).set(col, 1);
-		// System.out.println(board.get(i).get(col));
 		if (isSafe(i, col)) {
-		    bb.get(i).set(col, 1);
-		    
+		    b.get(i).set(col, 1);		    
 		    if (col == size - 1) {
-			addSolution(bb);
-			bb.get(i).set(col, 0);
+			addSolution(b);
+			b.get(i).set(col, 0);
 		    } else {
-			solveAux(bb, col+1);
-			// backtrack
-			bb.get(i).set(col, 0);
+			// solve for the next column
+			solve(b, col+1);
+			// backtrack by setting the current row to 0
+			// then try the next row
+			b.get(i).set(col, 0);
 		    }
 		}
 	    }
 	}
     }
-
-    // check if safe just on the left side
-    private boolean isSafe(int row, int col) {
+    
+    /**
+     *
+     * Check if a queen is safe. It cannot be captured in a single move.
+     *
+     */
+    boolean isSafe(int row, int col) {
 	int i, j;
  
         // check this row on left side
@@ -87,12 +107,32 @@ public class NaiveSolver {
                 return false;
 	    }
 	}
+
+	// check if there are three pieces in a line from the current position
+	// to the left
+	if (noThreeInLineConstraint && col > 1) {
+	    int col0, row0, col1, row1;
+
+	    for (col0 = 0; col0 < col - 1; col0++) {
+		for (row0 = 0; row0 < size; row0++) {
+		    
+		    if (board.get(row0).get(col0) == 1) {
+			for (col1 = col0 + 1; col1 < col; col1++) {
+			    for (row1 = 0; row1 < size; row1++) {
+				
+				if (board.get(row1).get(col1) == 1) {
+				    if ((col0 - col1) * (row0 - row) == (col0 - col) * (row0 - row1)) {
+					return false;
+				    }
+				}
+			    }
+			}
+		    }
+		}
+	    }
+	}
  
         return true;
-    }
-
-    private void solve() {
-	solveAux(board, 0);
     }
 
     public void printSolutions() {
@@ -109,5 +149,4 @@ public class NaiveSolver {
     public ArrayList<ArrayList<ArrayList<Integer>>> getSolutions() {
 	return solutions;
     }
-
 }
