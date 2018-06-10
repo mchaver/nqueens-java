@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * @since       0.1.0
  */
 
-public class NaiveSolver {
+public class BruteForceSolver {
     final int size;
     final ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>();
     final ArrayList<ArrayList<ArrayList<Integer>>> solutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
@@ -25,7 +25,7 @@ public class NaiveSolver {
      * @param noThreeInLineConstraint if false then solve the traditional N-Queens problem,
      * if true then solve with the no-three-in-line constraint.
      */
-    public NaiveSolver(int size, boolean noThreeInLineConstraint) {
+    public BruteForceSolver(int size, boolean noThreeInLineConstraint) {
 	this.size = size;
 	this.noThreeInLineConstraint = noThreeInLineConstraint;
 
@@ -41,20 +41,8 @@ public class NaiveSolver {
 	solve(board, 0);
     }
 
-    static ArrayList<ArrayList<Integer>> copy(ArrayList<ArrayList<Integer>> input) {
-	ArrayList<ArrayList<Integer>> copy = new ArrayList<ArrayList<Integer>>(input.size());
-	for (int i = 0; i < input.size(); i++) {
-	    ArrayList<Integer> row = input.get(i);
-	    copy.add(new ArrayList<Integer>(row.size())); // add internal array initialization
-	    for (int j = 0; j < row.size(); j++) {
-		copy.get(i).add(row.get(j)); // actually copy value into new array
-	    }
-	}
-	return copy;
-    }
-
     void addSolution(ArrayList<ArrayList<Integer>> b) {
-	this.solutions.add(copy(b));
+	this.solutions.add(Utils.copy(b));
     }
     
     public void solve(ArrayList<ArrayList<Integer>> b, int col) {
@@ -62,7 +50,7 @@ public class NaiveSolver {
 
 	if (col < size) {
 	    for (int i = 0; i < size; i++) {
-		if (isSafe(i, col)) {
+		if (canPlaceQueenAt(i, col)) {
 		    b.get(i).set(col, 1);		    
 		    if (col == size - 1) {
 			addSolution(b);
@@ -78,10 +66,16 @@ public class NaiveSolver {
 	    }
 	}
     }
+
+    boolean canPlaceQueenAt(int row, int col) {
+	return isSafe(row, col) && doesNotFormALine(row, col);
+    }
+					    
     
     /**
      *
-     * Check if a queen is safe. It cannot be captured in a single move.
+     * Check if a queen is safe (it cannot be captured in a single move) on its left side.
+     * Only search the left side for performance.
      *
      */
     boolean isSafe(int row, int col) {
@@ -107,21 +101,26 @@ public class NaiveSolver {
                 return false;
 	    }
 	}
+ 
+        return true;
+    }
 
-	// check if there are three pieces in a line from the current position
-	// to the left
-	if (noThreeInLineConstraint && col > 1) {
+    /**
+     *
+     * Check if a queen does not form a line with any two other queens on its left side. 
+     * Only search the left side for performance.
+     *
+     */
+    boolean doesNotFormALine(int row2, int col2) {
+	if (noThreeInLineConstraint && col2 > 1) {
 	    int col0, row0, col1, row1;
-
-	    for (col0 = 0; col0 < col - 1; col0++) {
-		for (row0 = 0; row0 < size; row0++) {
-		    
+	    for (col0 = 0; col0 < col2 - 1; col0++) {
+		for (row0 = 0; row0 < size; row0++) {		    
 		    if (board.get(row0).get(col0) == 1) {
-			for (col1 = col0 + 1; col1 < col; col1++) {
+			for (col1 = col0 + 1; col1 < col2; col1++) {
 			    for (row1 = 0; row1 < size; row1++) {
-				
 				if (board.get(row1).get(col1) == 1) {
-				    if ((col0 - col1) * (row0 - row) == (col0 - col) * (row0 - row1)) {
+				    if (Utils.threePointsFormALine(col0,row0,col1,row1,col2,row2)) {
 					return false;
 				    }
 				}
@@ -131,19 +130,22 @@ public class NaiveSolver {
 		}
 	    }
 	}
- 
-        return true;
+
+	return true;
     }
 
-    public void printSolutions() {
+    public String solutionsToString() {
+	StringBuilder sb = new StringBuilder(64);
 	for (ArrayList<ArrayList<Integer>> solution: solutions) {
 	    for (ArrayList<Integer> row: solution) {
 		String listString = row.stream().map(Object::toString)
 		    .collect(Collectors.joining(", "));
-		System.out.println(listString);
+		sb.append(listString);
+		sb.append("\n");
 	    }
-	    System.out.println("");
+	    sb.append("\n");
 	}
+	return sb.toString();
     }
 
     public ArrayList<ArrayList<ArrayList<Integer>>> getSolutions() {
