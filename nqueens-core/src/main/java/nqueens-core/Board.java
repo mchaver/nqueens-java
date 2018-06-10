@@ -95,19 +95,4 @@ public class Board {
 	sb.append("]");
 	return sb.toString();
     }
-
-    // public static int[][] fromJSON(String source) {
-    // 	String[] integersAsText = source.split(",");
- 
-    // 	int[] results = new int[ integersAsText.length ];
- 
-    // 	int i = 0; 
- 
-    // 	for (String textValue : integersAsText ) {
-    // 	    results[i] = Integer.parseInt( textValue ); 
-    // 	    i++; 
-    // 	} 
- 
-    // 	return results ; 
-    // }
 }
