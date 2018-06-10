@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.3.0] - 2018-06-10
 ### Added
 * javadocs for all methods.
+* Add `nqueens-cli` subproject with command line arguments.
+### Changed
+* Change from single gradle project to a collection of subprojects.
+* Move `src` to `nqueens-core`.
 
 ## [0.2.0] - 2018-06-10
 ### Added

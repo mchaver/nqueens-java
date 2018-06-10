@@ -90,8 +90,9 @@ class BruteForceSolverTest {
     void lineConstraintSizeFourTest() {
     	BruteForceSolver ns = new BruteForceSolver(8,true);
     	ArrayList<ArrayList<ArrayList<Integer>>> solutions = ns.getSolutions();
-		
-	System.out.println(solutions.size());
+
+    	assertTrue(solutions.size() < 92);
+	
 	Integer[][] as0 = {{0,0,0,0,0,1,0,0},{0,1,0,0,0,0,0,0},{0,0,0,0,0,0,1,0},{1,0,0,0,0,0,0,0},{0,0,0,1,0,0,0,0},{0,0,0,0,0,0,0,1},{0,0,0,0,1,0,0,0},{0,0,1,0,0,0,0,0}};
 	ArrayList<ArrayList<Integer>> s0 = Utils.arrayToArrayList(as0);
 
