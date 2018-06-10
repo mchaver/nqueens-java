@@ -18,7 +18,7 @@ dependencies {
 
 jar {
       baseName = 'nqueens'
-      version =  '0.1.0'
+      version =  '0.2.0'
 }
 
 test {
@@ -26,4 +26,9 @@ test {
     testLogging {
         showStandardStreams = true
     }
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
 }
