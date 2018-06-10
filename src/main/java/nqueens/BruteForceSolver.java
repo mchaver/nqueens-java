@@ -41,10 +41,22 @@ public class BruteForceSolver {
 	solve(board, 0);
     }
 
+    /**
+     * Append a solution to this.solutions.
+     * 
+     */
     void addSolution(ArrayList<ArrayList<Integer>> b) {
 	this.solutions.add(Utils.copy(b));
     }
-    
+
+    /**
+     * Find all of the solutions and store the results in this.solutions. 
+     * Given a col, iterate through all the rows checking if we can place
+     * a queen at any row. If we can, then for the board with a queen
+     * at (col, row), increment the col, and solve for the rows in the next col.
+     * This will branch into many boards. Branching only occurs when queens can be placed.
+     *
+     */ 
     public void solve(ArrayList<ArrayList<Integer>> b, int col) {
 	// all the queens are in the correct place
 
@@ -67,6 +79,10 @@ public class BruteForceSolver {
 	}
     }
 
+    /**
+     * Check if a Queen can be place at a particular coordinate based on the data to the left of its position..
+     * 
+     */
     boolean canPlaceQueenAt(int row, int col) {
 	return isSafe(row, col) && doesNotFormALine(row, col);
     }
@@ -134,6 +150,9 @@ public class BruteForceSolver {
 	return true;
     }
 
+    /**
+     * Return solutions as a string.
+     */
     public String solutionsToString() {
 	StringBuilder sb = new StringBuilder(64);
 	for (ArrayList<ArrayList<Integer>> solution: solutions) {
@@ -148,6 +167,10 @@ public class BruteForceSolver {
 	return sb.toString();
     }
 
+    /**
+     * Getter for this.solutions.
+     *
+     */
     public ArrayList<ArrayList<ArrayList<Integer>>> getSolutions() {
 	return solutions;
     }
