@@ -2,7 +2,7 @@
 
 ```
 $ ./gradlew build
-$ ./gradlew run
-$ ./gradlew clean test
-$ ./gradlew javadoc
+$ ./gradlew clean :nqueens-core:test
+$ ./gradlew :nqueens-core:javadoc
+$ ./gradlew :nqueens-cli:run
 ```
