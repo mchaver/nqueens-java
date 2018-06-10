@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class BruteForceSolver {
     final int size;
-    final ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>();
+    final ArrayList<ArrayList<Integer>> board;
     final ArrayList<ArrayList<ArrayList<Integer>>> solutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
     boolean noThreeInLineConstraint;
 
@@ -29,22 +29,28 @@ public class BruteForceSolver {
 	this.size = size;
 	this.noThreeInLineConstraint = noThreeInLineConstraint;
 
-	for (int i = 0; i < size; i++) {
-	    board.add(new ArrayList<Integer>(Collections.nCopies(size, 0)));
-	}
-
-	for (ArrayList<Integer> row: board) {
-	    String listString = row.stream().map(Object::toString)
-		.collect(Collectors.joining(", "));
-	}
+	Board b = new Board(size);
+	board = Board.toArrayList(b.getBoard());
 
 	solve(board, 0);
     }
 
+    /**
+     * Append a solution to this.solutions.
+     * 
+     */
     void addSolution(ArrayList<ArrayList<Integer>> b) {
 	this.solutions.add(Utils.copy(b));
     }
-    
+
+    /**
+     * Find all of the solutions and store the results in this.solutions. 
+     * Given a col, iterate through all the rows checking if we can place
+     * a queen at any row. If we can, then for the board with a queen
+     * at (col, row), increment the col, and solve for the rows in the next col.
+     * This will branch into many boards. Branching only occurs when queens can be placed.
+     *
+     */ 
     public void solve(ArrayList<ArrayList<Integer>> b, int col) {
 	// all the queens are in the correct place
 
@@ -67,6 +73,10 @@ public class BruteForceSolver {
 	}
     }
 
+    /**
+     * Check if a Queen can be place at a particular coordinate based on the data to the left of its position..
+     * 
+     */
     boolean canPlaceQueenAt(int row, int col) {
 	return isSafe(row, col) && doesNotFormALine(row, col);
     }
@@ -134,6 +144,9 @@ public class BruteForceSolver {
 	return true;
     }
 
+    /**
+     * Return solutions as a string.
+     */
     public String solutionsToString() {
 	StringBuilder sb = new StringBuilder(64);
 	for (ArrayList<ArrayList<Integer>> solution: solutions) {
@@ -148,6 +161,46 @@ public class BruteForceSolver {
 	return sb.toString();
     }
 
+    /**
+     *
+     * Return solutions as a JSON Array String.
+     */
+
+    public String solutionsToJSON() {
+	StringBuilder sb = new StringBuilder(64);
+	sb.append("[");
+
+	int i = 0;
+	int j = 0;
+	for (ArrayList<ArrayList<Integer>> solution: solutions) {
+	    sb.append("[");
+	    j = 0;
+	    for (ArrayList<Integer> row: solution) {
+		sb.append("[");
+		String listString = row.stream().map(Object::toString)
+		    .collect(Collectors.joining(","));
+		sb.append(listString);
+		sb.append("]");
+		if (j < size - 1) {
+		    sb.append(","); 
+		}
+		j++;
+	    }
+	    sb.append("]");
+	    if (i < solutions.size() - 1) {
+		sb.append(",");
+	    }
+	    i++;
+	}
+	sb.append("]");
+	return sb.toString();
+    }
+
+
+    /**
+     * Getter for this.solutions.
+     *
+     */
     public ArrayList<ArrayList<ArrayList<Integer>>> getSolutions() {
 	return solutions;
     }

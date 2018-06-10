@@ -1,0 +1,15 @@
+apply plugin : 'java' 
+apply plugin : 'application'
+
+mainClassName = 'nqueens.Main'
+
+dependencies {
+    compile project(':nqueens-core')
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+}
+
+run {
+  if (project.hasProperty("aargs")) {
+    args Eval.me(aargs)
+  }
+}

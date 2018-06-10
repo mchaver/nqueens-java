@@ -9,6 +9,12 @@ import java.util.ArrayList;
  */
 
 public class Utils {
+    /**
+     *
+     * Copy the values of an ArrayList<ArrayList<Integer>> and return a new ArrayList<ArrayList<Integer>>.
+     * References will not be copied. Changes to the new ArrayList<ArrayList<Integer>> will not affect the old one.
+     *
+     */
     static ArrayList<ArrayList<Integer>> copy(ArrayList<ArrayList<Integer>> input) {
 	ArrayList<ArrayList<Integer>> copy = new ArrayList<ArrayList<Integer>>(input.size());
 	for (int i = 0; i < input.size(); i++) {
@@ -21,6 +27,12 @@ public class Utils {
 	return copy;
     }
 
+    /**
+     *
+     * Copy the values of an Integer[][] and return a new ArrayList<ArrayList<Integer>>.
+     * References will not be copied. Changes to the new ArrayList<ArrayList<Integer>> will not affect the Integer[][].
+     *
+     */
     static ArrayList<ArrayList<Integer>> arrayToArrayList(Integer[][] as) {
 	ArrayList<ArrayList<Integer>> copy = new ArrayList<ArrayList<Integer>>(as.length);
 
