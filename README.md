@@ -21,9 +21,9 @@ We can rearrange the formula to eliminate these issues:
 (x0 - x1) * (y0 - y2) == (x0 - x2) * (y0 - y1)
 ```
 
-#### nqueens-java
+## Projects
 
-Build the project:
+Build all the projects:
 
 ```
 $ ./gradlew build
