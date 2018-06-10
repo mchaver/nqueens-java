@@ -21,6 +21,7 @@ We can rearrange the formula to eliminate these issues:
 (x0 - x1) * (y0 - y2) == (x0 - x2) * (y0 - y1)
 ```
 
+#### nqueens-java
 
 Build the project:
 
@@ -52,6 +53,8 @@ $ ./gradlew :nqueens-cli:run -Paargs="['-n=4', '-l']"
 $ ./gradlew :nqueens-cli:run -Paargs="['-n=8']"
 $ ./gradlew :nqueens-cli:run -Paargs="['-n=8', '-l']"
 ```
+
+Adding the `-l` flag will run the algorithm with the `no-three-in-line` constraint.
 
 #### nqueens-server
 
