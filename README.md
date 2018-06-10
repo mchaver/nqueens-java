@@ -68,3 +68,8 @@ In another command line window you can perform a request while it is running.
 ```
 $ curl localhost:8081/nqueens?n=4
 ```
+
+
+```
+$ ./gradlew :nqueens-core:jmh
+```

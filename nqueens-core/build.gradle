@@ -1,3 +1,17 @@
+buildscript {
+  repositories {
+    jcenter()
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "me.champeau.gradle:jmh-gradle-plugin:0.4.6"
+  }
+}
+
+apply plugin: "me.champeau.gradle.jmh"
+
 apply plugin: 'java'
 
 dependencies {
@@ -7,6 +21,9 @@ dependencies {
    testRuntimeOnly(
      'org.junit.jupiter:junit-jupiter-engine:5.1.0'
    )
+   jmh 'commons-io:commons-io:2.4'
+   // jmh 'org.openjdk.jmh:jmh-core:0.9'
+   // jmh 'org.openjdk.jmh:jmh-generator-annprocess:0.9'
 }
 
 jar {
