@@ -1,4 +1,5 @@
 rootProject.name = 'nqueens-java'
 
-include 'nqueens-core'
 include 'nqueens-cli'
+include 'nqueens-core'
+include 'nqueens-server'

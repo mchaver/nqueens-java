@@ -7,17 +7,9 @@ dependencies {
     compile project(':nqueens-core')
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
 }
-dependencies {
-
-}
 
 run {
-  // args findProperty('args')
   if (project.hasProperty("aargs")) {
     args Eval.me(aargs)
   }
-    // if (project.hasProperty("appArgs")) {
-    //     args Eval.me(appArgs)
-    // 	// -PappArgs="['arg1', 'args2']"
-    // }
 }

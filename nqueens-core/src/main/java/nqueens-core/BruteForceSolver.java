@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class BruteForceSolver {
     final int size;
-    final ArrayList<ArrayList<Integer>> board = new ArrayList<ArrayList<Integer>>();
+    final ArrayList<ArrayList<Integer>> board;
     final ArrayList<ArrayList<ArrayList<Integer>>> solutions = new ArrayList<ArrayList<ArrayList<Integer>>>();
     boolean noThreeInLineConstraint;
 
@@ -29,14 +29,8 @@ public class BruteForceSolver {
 	this.size = size;
 	this.noThreeInLineConstraint = noThreeInLineConstraint;
 
-	for (int i = 0; i < size; i++) {
-	    board.add(new ArrayList<Integer>(Collections.nCopies(size, 0)));
-	}
-
-	for (ArrayList<Integer> row: board) {
-	    String listString = row.stream().map(Object::toString)
-		.collect(Collectors.joining(", "));
-	}
+	Board b = new Board(size);
+	board = Board.toArrayList(b.getBoard());
 
 	solve(board, 0);
     }
@@ -166,6 +160,42 @@ public class BruteForceSolver {
 	}
 	return sb.toString();
     }
+
+    /**
+     *
+     * Return solutions as a JSON Array String.
+     */
+
+    public String solutionsToJSON() {
+	StringBuilder sb = new StringBuilder(64);
+	sb.append("[");
+
+	int i = 0;
+	int j = 0;
+	for (ArrayList<ArrayList<Integer>> solution: solutions) {
+	    sb.append("[");
+	    j = 0;
+	    for (ArrayList<Integer> row: solution) {
+		sb.append("[");
+		String listString = row.stream().map(Object::toString)
+		    .collect(Collectors.joining(","));
+		sb.append(listString);
+		sb.append("]");
+		if (j < size - 1) {
+		    sb.append(","); 
+		}
+		j++;
+	    }
+	    sb.append("]");
+	    if (i < solutions.size() - 1) {
+		sb.append(",");
+	    }
+	    i++;
+	}
+	sb.append("]");
+	return sb.toString();
+    }
+
 
     /**
      * Getter for this.solutions.

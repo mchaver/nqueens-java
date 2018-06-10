@@ -7,38 +7,3 @@ allprojects {
 subprojects {
   version = '0.3.0'
 }
-
-// apply plugin: 'java'
-// apply plugin: 'application'
-// mainClassName = 'nqueens.Main'
-
-// repositories {
-//   mavenCentral()
-// }
-
-// dependencies {
-//    testImplementation(
-//      'org.junit.jupiter:junit-jupiter-api:5.1.0'
-//    )
-//    testRuntimeOnly(
-//      'org.junit.jupiter:junit-jupiter-engine:5.1.0'
-//    )
-// }
-
-
-// jar {
-//       baseName = 'nqueens'
-//       version =  '0.3.0'
-// }
-
-// test {
-//     useJUnitPlatform()
-//     testLogging {
-//         showStandardStreams = true
-//     }
-// }
-
-// javadoc {
-//     source = sourceSets.main.allJava
-//     classpath = configurations.compile
-// }
